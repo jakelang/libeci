@@ -1,6 +1,6 @@
 [package]
-name = "libecic"
+name = "ecic"
 version = "0.1.0"
-authors = ["Jake Lang <phazon@protonmail.com>"]
+authors = ["Jake Lang <jake@ethereum.org>"]
 
 [dependencies]
