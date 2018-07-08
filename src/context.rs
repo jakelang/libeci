@@ -23,15 +23,15 @@ impl EcicContext {
         }
     }
 
+    pub fn wast_len(&self) -> usize {
+        self.input_wast.len()
+    }
+
     /*
      * Debug stuff
      */
     pub fn debug_printwast(self) {
         debug!("Context has wast:\n {}", self.input_wast);
-    }
-
-    pub fn wast_len(&self) -> usize {
-        self.input_wast.len()
     }
 }
 
