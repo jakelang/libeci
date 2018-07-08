@@ -1,5 +1,5 @@
 pub struct EcicContext {
-    input_wast: String
+    code: Vec<u8>
 }
 
 impl EcicContext {
@@ -12,26 +12,18 @@ impl EcicContext {
 
     pub fn empty() -> Self {
         EcicContext {
-            input_wast: String::new()
+            code: Vec::new()
         }
     }
 
-    pub fn from_string(wast: &String) -> Self {
-        debug!("Loading context with wast: {}", wast);
+    pub fn from_vec(input: &Vec<u8>) -> Self {
         EcicContext {
-            input_wast: wast.clone()
+            code: input.clone()
         }
     }
 
-    pub fn wast_len(&self) -> usize {
-        self.input_wast.len()
-    }
-
-    /*
-     * Debug stuff
-     */
-    pub fn debug_printwast(self) {
-        debug!("Context has wast:\n {}", self.input_wast);
+    pub fn code_len(&self) -> usize {
+        self.code.len()
     }
 }
 
@@ -42,14 +34,14 @@ mod tests {
     #[test]
     fn empty_wast() {
         let empty_ctx = EcicContext::new();
-        assert!(empty_ctx.input_wast.is_empty());
+        assert!(empty_ctx.code.is_empty());
     }
     
     #[test]
     fn basic_wast() {
-        let basic_wast = String::from("(module)");
-        let basic_ctx = EcicContext::from_string(&basic_wast);
-        assert_eq!(8, basic_wast.len());
-        assert_eq!(8, basic_ctx.wast_len());
+        let wasm = vec!(0x00, 0x77, 0x61, 0x73, 0x6d);
+        let ctx = EcicContext::from_vec(&wasm);
+        assert_eq!(5, wasm.len());
+        assert_eq!(5, ctx.code_len());
     }
 }
