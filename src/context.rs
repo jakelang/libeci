@@ -29,6 +29,10 @@ impl EcicContext {
     pub fn debug_printwast(self) {
         debug!("Context has wast:\n {}", self.input_wast);
     }
+
+    pub fn wast_len(&self) -> usize {
+        self.input_wast.len()
+    }
 }
 
 #[cfg(test)]
@@ -46,7 +50,6 @@ mod tests {
         let basic_wast = String::from("(module)");
         let basic_ctx = EcicContext::from_string(&basic_wast);
         assert_eq!(8, basic_wast.len());
-        assert_eq!(8, basic_ctx.input_wast.len());
-        basic_ctx.debug_printwast();
+        assert_eq!(8, basic_ctx.wast_len());
     }
 }
