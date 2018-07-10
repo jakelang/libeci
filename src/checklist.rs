@@ -39,7 +39,7 @@ impl EciChecklist {
 
 #[cfg(test)]
 mod tests {
-    use eci::*;
+    use checklist::*;
 
     #[test]
     fn empty_checklist() {
