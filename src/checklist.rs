@@ -39,6 +39,17 @@ impl EciChecklist {
     pub fn add_check(&mut self, key: &str) {
         self.checklist.insert(key.to_string(), CheckStatus::Unknown);
     }
+
+    pub fn set_check_status(&mut self, key: &str, val: CheckStatus) {
+        *self.checklist.get_mut(&key.to_string()).unwrap() = val;
+    }
+
+    pub fn check_is_good(&self, key: &str) -> bool {
+        match self.checklist[&key.to_string()] {
+            CheckStatus::Good => true,
+            _ => false
+        }
+    }
 }
 
 #[cfg(test)]
@@ -64,5 +75,13 @@ mod tests {
         let mut checks = EciChecklist::new();
         checks.add_check("random-arbitrary-check");
         assert!(checks.checklist.contains_key(&"random-arbitrary-check".to_string()));
+    }
+
+    #[test]
+    fn verify_check() {
+        let mut checks = EciChecklist::new();
+        checks.add_check("foobar");
+        checks.set_check_status("foobar", CheckStatus::Good);
+        assert!(checks.check_is_good("foobar"));
     }
 }
