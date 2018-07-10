@@ -35,6 +35,10 @@ impl EciChecklist {
             checklist: checks
         }
     }
+
+    pub fn add_check(&mut self, key: &str) {
+        self.checklist.insert(key.to_string(), CheckStatus::Unknown);
+    }
 }
 
 #[cfg(test)]
@@ -53,5 +57,12 @@ mod tests {
         assert!(checks.checklist.contains_key(&"export-main".to_string()));
         assert!(checks.checklist.contains_key(&"export-memory".to_string()));
         assert!(checks.checklist.contains_key(&"eei-imports".to_string()));
+    }
+
+    #[test]
+    fn insert_arbitrary_check() {
+        let mut checks = EciChecklist::new();
+        checks.add_check("random-arbitrary-check");
+        assert!(checks.checklist.contains_key(&"random-arbitrary-check".to_string()));
     }
 }
