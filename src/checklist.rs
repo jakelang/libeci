@@ -24,7 +24,7 @@ impl EciChecklist {
         }
     }
 
-    pub fn eci_default() -> Self {
+    pub fn default() -> Self {
         let checks: HashMap<String, CheckStatus> = 
             [("export-main".to_string(), CheckStatus::Unknown),
              ("export-memory".to_string(), CheckStatus::Unknown),
@@ -68,7 +68,7 @@ mod tests {
 
     #[test]
     fn default_checks() {
-        let checks = EciChecklist::eci_default();
+        let checks = EciChecklist::default();
         assert!(checks.checklist.contains_key(&"export-main".to_string()));
         assert!(checks.checklist.contains_key(&"export-memory".to_string()));
         assert!(checks.checklist.contains_key(&"eei-imports".to_string()));
