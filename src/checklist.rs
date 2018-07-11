@@ -5,7 +5,7 @@ use std::collections::HashMap;
  * This is always initialized as "Unknown", and changed during
  * the check phase to reflect its degree of ECI conformance.
  */
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum CheckStatus {
     Unknown,
     Nonexistent,
@@ -44,8 +44,12 @@ impl EciChecklist {
         *self.checklist.get_mut(&key.to_string()).unwrap() = val;
     }
 
+    pub fn get_check_status(&self, key: &str) -> CheckStatus {
+        return self.checklist[&key.to_string()].clone();
+    }
+
     pub fn check_is_good(&self, key: &str) -> bool {
-        match self.checklist[&key.to_string()] {
+        match self.get_check_status(key) {
             CheckStatus::Good => true,
             _ => false
         }
@@ -83,5 +87,25 @@ mod tests {
         checks.add_check("foobar");
         checks.set_check_status("foobar", CheckStatus::Good);
         assert!(checks.check_is_good("foobar"));
+    }
+
+    #[test]
+    fn test_check_eq() {
+        let mut checks = EciChecklist::new();
+        checks.add_check("foobar");
+        checks.set_check_status("foobar", CheckStatus::Nonexistent);
+        assert!(status_eq(checks.get_check_status("foobar"), CheckStatus::Nonexistent));
+        checks.set_check_status("foobar", CheckStatus::Malformed);
+        assert!(status_eq(checks.get_check_status("foobar"), CheckStatus::Malformed));
+        checks.set_check_status("foobar", CheckStatus::Good);
+        assert!(status_eq(checks.get_check_status("foobar"), CheckStatus::Good));
+    }
+
+    /* ezpz helper for comparing enum values. yes i could just derive PartialEq don't judge me */
+    fn status_eq(a: CheckStatus, b: CheckStatus) -> bool {
+        match a {
+            b => true,
+            _ => false
+        }
     }
 }
