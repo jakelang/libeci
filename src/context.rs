@@ -1,5 +1,6 @@
 use checklist::EciChecklist;
 
+#[derive(Clone)]
 pub struct EcicContext {
     code: Vec<u8>,
     checks: EciChecklist

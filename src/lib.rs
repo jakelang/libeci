@@ -2,3 +2,4 @@
 
 pub mod context;
 pub mod checklist;
+pub mod checker;

@@ -13,6 +13,7 @@ pub enum CheckStatus {
     Good,
 }
 
+#[derive(Clone)]
 pub struct EciChecklist {
     checklist: HashMap<String, CheckStatus>
 }
