@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use parity_wasm::elements::Module;
+use eci_std;
 
 /*
  * Enum describing the state of a check on an ECI property.
@@ -14,8 +16,14 @@ pub enum CheckStatus {
 }
 
 #[derive(Clone)]
+pub struct Check {
+    status: CheckStatus,
+    do_check: fn(&Module) -> CheckStatus,
+}
+
+#[derive(Clone)]
 pub struct EciChecklist {
-    checklist: HashMap<String, CheckStatus>
+    pub checklist: HashMap<String, Check>
 }
 
 impl EciChecklist {
@@ -26,10 +34,10 @@ impl EciChecklist {
     }
 
     pub fn default() -> Self {
-        let checks: HashMap<String, CheckStatus> = 
-            [("export-main".to_string(), CheckStatus::Unknown),
-             ("export-memory".to_string(), CheckStatus::Unknown),
-             ("eei-imports".to_string(), CheckStatus::Unknown)]
+        let checks: HashMap<String, Check> = 
+            [("export-main".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_main_exported }),
+             ("export-memory".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_mem_exported }),
+             ("eei-imports".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_eei_imported })]
             .iter().cloned().collect();
 
         EciChecklist {
@@ -37,16 +45,16 @@ impl EciChecklist {
         }
     }
 
-    pub fn add_check(&mut self, key: &str) {
-        self.checklist.insert(key.to_string(), CheckStatus::Unknown);
+    pub fn add_check(&mut self, key: &str, checkfn: fn(&Module) -> CheckStatus) {
+        self.checklist.insert(key.to_string(), Check { status: CheckStatus::Unknown, do_check: checkfn });
     }
 
     pub fn set_check_status(&mut self, key: &str, val: CheckStatus) {
-        *self.checklist.get_mut(&key.to_string()).unwrap() = val;
+        self.checklist.get_mut(&key.to_string()).unwrap().status = val;
     }
 
     pub fn get_check_status(&self, key: &str) -> CheckStatus {
-        self.checklist[&key.to_string()].clone()
+        self.checklist[&key.to_string()].status.clone()
     }
 
     pub fn check_is_good(&self, key: &str) -> bool {
@@ -54,6 +62,10 @@ impl EciChecklist {
             CheckStatus::Good => true,
             _ => false
         }
+    }
+
+    pub fn get_checker(&self, key: &str) -> fn(&Module) -> CheckStatus {
+        self.checklist[&key.to_string()].do_check
     }
 }
 
@@ -78,14 +90,14 @@ mod tests {
     #[test]
     fn insert_arbitrary_check() {
         let mut checks = EciChecklist::new();
-        checks.add_check("random-arbitrary-check");
+        checks.add_check("random-arbitrary-check", eci_std::chk_main_exported);
         assert!(checks.checklist.contains_key(&"random-arbitrary-check".to_string()));
     }
 
     #[test]
     fn verify_check() {
         let mut checks = EciChecklist::new();
-        checks.add_check("foobar");
+        checks.add_check("foobar", eci_std::chk_main_exported);
         checks.set_check_status("foobar", CheckStatus::Good);
         assert!(checks.check_is_good("foobar"));
     }
@@ -93,7 +105,7 @@ mod tests {
     #[test]
     fn test_check_eq() {
         let mut checks = EciChecklist::new();
-        checks.add_check("foobar");
+        checks.add_check("foobar", eci_std::chk_main_exported);
         checks.set_check_status("foobar", CheckStatus::Nonexistent);
         assert_eq!(checks.get_check_status("foobar"), CheckStatus::Nonexistent);
         checks.set_check_status("foobar", CheckStatus::Malformed);
