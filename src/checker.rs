@@ -75,7 +75,7 @@ mod tests {
         assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Unknown);
         assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Unknown);
         checker.fire();
-        assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Good);
+        assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Nonexistent);
         assert_eq!(checker.checks.get_check_status("export-memory"), CheckStatus::Good);
         assert_eq!(checker.checks.get_check_status("eei-imports"), CheckStatus::Good);
     }

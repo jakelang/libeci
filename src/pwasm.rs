@@ -1,7 +1,7 @@
 use parity_wasm::elements::{Module, Type, FunctionType, Internal, External};
 
 /* Borrowed from pwasm examples */
-fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
+pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 
 	let function_section = module.function_section().expect("No function section found");
 	let type_section = module.type_section().expect("No type section found");
@@ -24,17 +24,17 @@ fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 	}
 }
 
-fn export_index_by_name(module: &Module, name: &str) -> Option<usize> {
+pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Internal)> {
     if !has_export_section(module) { 
         return None; 
     } else {
-        let idx: Option<usize> = match module.export_section().unwrap().entries().iter()
+        let idx: Option<(u32, Internal)> = match module.export_section().unwrap().entries().iter()
             .find(|export| if export.field() == name { true } else { false }) {
                 Some(export) => match *export.internal() { //Is there any way to do this more simply?
-                        Internal::Function(index) => Some(index as usize),
-                        Internal::Memory(index) => Some(index as usize),
-                        Internal::Global(index) => Some(index as usize),
-                        Internal::Table(index) => Some(index as usize),
+                        Internal::Function(index) => Some((index, Internal::Function(index))),
+                        Internal::Memory(index) => Some((index, Internal::Memory(index))),
+                        Internal::Global(index) => Some((index, Internal::Global(index))),
+                        Internal::Table(index) => Some((index, Internal::Table(index))),
                 }, 
                 None => return None, 
             };
