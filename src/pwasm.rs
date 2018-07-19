@@ -35,7 +35,7 @@ pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Inter
                         Internal::Global(index) => Some((index, Internal::Global(index))),
                         Internal::Table(index) => Some((index, Internal::Table(index))),
                 }, 
-                None => return None, 
+                None => None, 
             };
         idx
     }
