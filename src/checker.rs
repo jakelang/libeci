@@ -97,4 +97,15 @@ mod tests {
         checker.fire();
         assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Nonexistent);
     }
+
+    #[test]
+    fn test_main_export_is_a_memory() {
+        let wasm:Vec<u8> = vec!(0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00, 0x05, 0x03, 0x01, 0x00,
+            0x00, 0x07, 0x08, 0x01, 0x04, 0x6d, 0x61, 0x69, 0x6e, 0x02, 0x00);
+
+        let mut checker = EcicChecker::default(&wasm);
+        assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Unknown);
+        checker.fire();
+        assert_eq!(checker.checks.get_check_status("export-main"), CheckStatus::Malformed);
+    }
 }

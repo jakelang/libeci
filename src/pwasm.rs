@@ -2,7 +2,6 @@ use parity_wasm::elements::{Module, Type, FunctionType, Internal, External};
 
 /* Borrowed from pwasm examples */
 pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
-
 	let function_section = module.function_section().expect("No function section found");
 	let type_section = module.type_section().expect("No type section found");
 
