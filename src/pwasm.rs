@@ -1,6 +1,6 @@
 use parity_wasm::elements::{Module, Type, FunctionType, Internal, External};
 
-/* Borrowed from pwasm examples */
+/// Resolves a function's signature from its callable index.
 pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 	let function_section = module.function_section().expect("No function section found");
 	let type_section = module.type_section().expect("No type section found");
@@ -23,6 +23,7 @@ pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 	}
 }
 
+/// Resolves an export name to a tuple containing its callable index and internal reference.
 pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Internal)> {
     if !has_export_section(module) { 
         return None; 
@@ -41,6 +42,7 @@ pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Inter
     }
 }
 
+/// Determines whether a module has an export section.
 pub fn has_export_section(module: &Module) -> bool {
     match module.export_section() {
         Some(_thing) => true,

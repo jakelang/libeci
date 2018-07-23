@@ -2,6 +2,7 @@ use checklist::EciChecklist;
 use parity_wasm::elements::{Module, deserialize_buffer};
 
 #[derive(Clone)]
+///Structure initialized with inputted WASM code and a checklist struct.
 pub struct EcicChecker {
     code: Vec<u8>,
     checks: EciChecklist
@@ -11,10 +12,12 @@ impl EcicChecker {
     /*
      * Basic context constructors
      */
+/// Constructs an empty checker struct with no code and no checks.
     pub fn new() -> Self {
         EcicChecker::empty()
     }
 
+/// Constructs an empty checker struct with no code and no checks.
     pub fn empty() -> Self {
         EcicChecker {
             code: Vec::new(),
@@ -22,6 +25,7 @@ impl EcicChecker {
         }
     }
 
+/// Initializes with inputted code and the default ECI checks.
     pub fn default(input: &Vec<u8>) -> Self {
         EcicChecker {
             code: input.clone(),
@@ -29,10 +33,12 @@ impl EcicChecker {
         }
     }
 
+/// Returns the length of the WASM bytecode.
     pub fn code_len(&self) -> usize {
         self.code.len()
     }
 
+/// Deserializes the WASM code and executes all checks in the checklist.
     pub fn fire(&mut self) {
         let module = deserialize_buffer::<Module>(&mut self.code).unwrap();
         

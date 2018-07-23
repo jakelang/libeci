@@ -2,10 +2,12 @@ use parity_wasm::elements::{Module, Internal, FunctionType};
 use pwasm::*;
 use checklist::CheckStatus;
 
+/// Checks that the module's "main" function has been exported with no arguments or return values.
 pub fn chk_main_exported(module: &Module) -> CheckStatus {
     has_func_export(module, "main", FunctionType::default())
 }
 
+/// Checks that the module's memory segment has been properly exported.
 pub fn chk_mem_exported(module: &Module) -> CheckStatus {
     match resolve_export_by_name(module, "memory") {
         Some((index, reference)) => if reference == Internal::Memory(index) {
@@ -17,6 +19,7 @@ pub fn chk_mem_exported(module: &Module) -> CheckStatus {
     }
 }
 
+/// Checks that the EEI host functions have been imported with the correct namespace and signatures. 
 pub fn chk_eei_imported(module: &Module) -> CheckStatus {
     CheckStatus::Good
 }
@@ -24,6 +27,8 @@ pub fn chk_eei_imported(module: &Module) -> CheckStatus {
 /*
  * Utilities
  */
+
+/// Utility function checking that a module has an exported function with a given signature.
 pub fn has_func_export(module: &Module, name: &str, sig: FunctionType) -> CheckStatus {
     match resolve_export_by_name(module, name) {
         Some((index, reference)) => if reference == Internal::Function(index) && func_type_by_index(module, index as usize) == sig { 
