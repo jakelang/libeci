@@ -49,3 +49,11 @@ pub fn has_export_section(module: &Module) -> bool {
         None => false,
     }
 }
+
+/// Determines whether a module has an import section.
+pub fn has_import_section(module: &Module) -> bool {
+    match module.import_section() {
+        Some(_thing) => true,
+        None => false,
+    }
+}
