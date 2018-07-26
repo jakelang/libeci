@@ -37,7 +37,8 @@ impl EciChecklist {
         let checks: HashMap<String, Check> = 
             [("export-main".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_main_exported }),
              ("export-memory".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_mem_exported }),
-             ("eei-imports".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_eei_imported })]
+             ("eei-imports".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_eei_imported }),
+             ("no-startfn".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_no_startfn })]
             .iter().cloned().collect();
 
         EciChecklist {
