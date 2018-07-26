@@ -2,21 +2,27 @@ use parity_wasm::elements::{Module, Type, FunctionType, Internal, External};
 
 /// Resolves a function's signature from its callable index.
 pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
-	let function_section = module.function_section().expect("No function section found");
-	let type_section = module.type_section().expect("No type section found");
+	let function_section = module.function_section()
+            .expect("No function section found");
+	let type_section = module.type_section()
+            .expect("No type section found");
 
 	let import_section_len: usize = match module.import_section() {
 			Some(import) =>
-				import.entries().iter().filter(|entry| match entry.external() {
-					&External::Function(_) => true,
-					_ => false,
+				import.entries()
+                                    .iter()
+                                    .filter(|entry| match entry.external() {
+					    &External::Function(_) => true,
+					    _ => false,
 					}).count(),
 			None => 0,
 		};
 
 	let function_index_in_section = index - import_section_len;
 
-	let func_type_ref: usize = function_section.entries()[function_index_in_section].type_ref() as usize;
+	let func_type_ref: usize = function_section
+            .entries()[function_index_in_section]
+            .type_ref() as usize;
 
 	match type_section.types()[func_type_ref] {
 		Type::Function(ref func_type) => func_type.clone(),
@@ -28,9 +34,12 @@ pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Inter
     if !has_export_section(module) { 
         return None; 
     } else {
-        let idx: Option<(u32, Internal)> = match module.export_section().unwrap().entries().iter()
+        let idx: Option<(u32, Internal)> = match module.export_section()
+            .unwrap()
+            .entries()
+            .iter()
             .find(|export| if export.field() == name { true } else { false }) {
-                Some(export) => match *export.internal() { //Is there any way to do this more simply?
+                Some(export) => match *export.internal() { //halp
                         Internal::Function(index) => Some((index, Internal::Function(index))),
                         Internal::Memory(index) => Some((index, Internal::Memory(index))),
                         Internal::Global(index) => Some((index, Internal::Global(index))),
@@ -39,6 +48,21 @@ pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Inter
                 None => None, 
             };
         idx
+    }
+}
+
+/// Parses a module's import section into a list of tuples containing the export fields.
+pub fn get_imports(module: &Module) -> Option<Vec<(&str, &str)>> {
+    if !has_import_section(module) {
+        return None
+    } else {
+        let imports_list: Option<Vec<(&str, &str)>> = Some(module
+            .import_section()
+            .unwrap()
+            .entries()
+            .iter()
+            .map(|x| (x.module(), x.field())).collect());
+        imports_list
     }
 }
 
