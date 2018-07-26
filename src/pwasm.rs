@@ -1,6 +1,6 @@
 use parity_wasm::elements::{Module, Type, FunctionType, Internal, External};
 
-/// Resolves a function's signature from its callable index.
+/// Resolves a function's signature from its callable index. Borrowed from pwasm examples
 pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 	let function_section = module.function_section()
             .expect("No function section found");
