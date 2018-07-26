@@ -9,9 +9,6 @@ pub struct EcicChecker {
 }
 
 impl EcicChecker {
-    /*
-     * Basic context constructors
-     */
 /// Constructs an empty checker struct with no code and no checks.
     pub fn new() -> Self {
         EcicChecker::empty()
