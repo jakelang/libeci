@@ -21,7 +21,8 @@ pub fn chk_mem_exported(module: &Module) -> CheckStatus {
 
 /// Checks that the EEI host functions have been imported with the correct namespace and signatures. 
 pub fn chk_eei_imported(module: &Module) -> CheckStatus {
-    CheckStatus::Good
+    if has_import_section(module) { imports_only_eei_namespace(module) }
+    else { CheckStatus::Good }
 }
 
 /// Ensures that a module has not incorrectly specified a start function.
@@ -46,4 +47,14 @@ pub fn has_func_export(module: &Module, name: &str, sig: FunctionType) -> CheckS
         },
         None => CheckStatus::Nonexistent,
     }
+}
+
+pub fn imports_only_eei_namespace(module: &Module) -> CheckStatus {
+    let importlist = get_imports(module).unwrap();
+
+    for (module, _field) in importlist {
+       if module != "ethereum" { return CheckStatus::Malformed; }
+    }
+    
+    CheckStatus::Good
 }
