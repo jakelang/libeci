@@ -26,7 +26,10 @@ pub fn chk_eei_imported(module: &Module) -> CheckStatus {
 
 /// Ensures that a module has not incorrectly specified a start function.
 pub fn chk_no_startfn(module: &Module) -> CheckStatus {
-    CheckStatus::Good
+    match module.start_section() {
+        Some(_thing) => CheckStatus::Malformed,
+        None => CheckStatus::Good,
+    } 
 }
 
 /*
