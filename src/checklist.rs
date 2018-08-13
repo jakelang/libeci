@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-use parity_wasm::elements::Module;
 use eci_std;
+use parity_wasm::elements::Module;
+use std::collections::HashMap;
 
 /// Enum describing the state of a check. Always initialized as "Unknown."
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -21,55 +21,85 @@ pub struct Check {
 /// Checklist structure containing a string-to-check map.
 #[derive(Clone)]
 pub struct EciChecklist {
-    pub checklist: HashMap<String, Check>
+    pub checklist: HashMap<String, Check>,
 }
 
 impl EciChecklist {
-/// Constructs an empty checklist.
+    /// Constructs an empty checklist.
     pub fn new() -> Self {
         EciChecklist {
-            checklist: HashMap::new()
+            checklist: HashMap::new(),
         }
     }
 
-/// Constructs a checklist with the standard ewasm ECI checks.
+    /// Constructs a checklist with the standard ewasm ECI checks.
     pub fn default() -> Self {
-        let checks: HashMap<String, Check> = 
-            [("export-main".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_main_exported }),
-             ("export-memory".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_mem_exported }),
-             ("eei-imports".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_eei_imported }),
-             ("no-startfn".to_string(), Check { status: CheckStatus::Unknown, do_check: eci_std::chk_no_startfn })]
-            .iter().cloned().collect();
+        let checks: HashMap<String, Check> = [
+            (
+                "export-main".to_string(),
+                Check {
+                    status: CheckStatus::Unknown,
+                    do_check: eci_std::chk_main_exported,
+                },
+            ),
+            (
+                "export-memory".to_string(),
+                Check {
+                    status: CheckStatus::Unknown,
+                    do_check: eci_std::chk_mem_exported,
+                },
+            ),
+            (
+                "eei-imports".to_string(),
+                Check {
+                    status: CheckStatus::Unknown,
+                    do_check: eci_std::chk_eei_imported,
+                },
+            ),
+            (
+                "no-startfn".to_string(),
+                Check {
+                    status: CheckStatus::Unknown,
+                    do_check: eci_std::chk_no_startfn,
+                },
+            ),
+        ].iter()
+            .cloned()
+            .collect();
 
-        EciChecklist {
-            checklist: checks
-        }
+        EciChecklist { checklist: checks }
     }
 
-/// Adds a check with the given ID and function implementing said check.
+    /// Adds a check with the given ID and function implementing said check.
     pub fn add_check(&mut self, key: &str, checkfn: fn(&Module) -> CheckStatus) {
-        self.checklist.insert(key.to_string(), Check { status: CheckStatus::Unknown, do_check: checkfn });
+        self.checklist.insert(
+            key.to_string(),
+            Check {
+                status: CheckStatus::Unknown,
+                do_check: checkfn,
+            },
+        );
     }
 
-/// Sets the status of a check.
+    /// Sets the status of a check.
     pub fn set_check_status(&mut self, key: &str, val: CheckStatus) {
         self.checklist.get_mut(&key.to_string()).unwrap().status = val;
     }
 
-/// Returns the status of a check.
+    /// Returns the status of a check.
     pub fn get_check_status(&self, key: &str) -> CheckStatus {
         self.checklist[&key.to_string()].status.clone()
     }
 
-/// Returns a simple boolean value describing whether a check is good or not.
+    /// Returns a simple boolean value describing whether a check is good or not.
     pub fn check_is_good(&self, key: &str) -> bool {
         match self.get_check_status(key) {
             CheckStatus::Good => true,
-            _ => false
+            _ => false,
         }
     }
 
-/// Returns a function pointer to the implementation of a check.
+    /// Returns a function pointer to the implementation of a check.
     pub fn get_checker(&self, key: &str) -> fn(&Module) -> CheckStatus {
         self.checklist[&key.to_string()].do_check
     }
@@ -97,7 +127,11 @@ mod tests {
     fn insert_arbitrary_check() {
         let mut checks = EciChecklist::new();
         checks.add_check("random-arbitrary-check", eci_std::chk_main_exported);
-        assert!(checks.checklist.contains_key(&"random-arbitrary-check".to_string()));
+        assert!(
+            checks
+                .checklist
+                .contains_key(&"random-arbitrary-check".to_string())
+        );
     }
 
     #[test]
