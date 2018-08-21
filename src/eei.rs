@@ -253,11 +253,11 @@ mod tests {
     fn default_interface_has_methods() {
         let iface = ImportInterfaceMap::default();
         assert_eq!(
-            iface.get_func("useGas").unwrap().clone(),
+            iface.get_func("useGas").unwrap(),
             FunctionType::new(vec![ValueType::I64], None)
         );
         assert_eq!(
-            iface.get_func("create").unwrap().clone(),
+            iface.get_func("create").unwrap(),
             FunctionType::new(
                 vec![
                     ValueType::I64,
