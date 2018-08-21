@@ -32,7 +32,7 @@ pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 /// Resolves an export name to a tuple containing its callable index and internal reference.
 pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Internal)> {
     if !has_export_section(module) {
-        return None;
+        None
     } else {
         let idx: Option<(u32, Internal)> = match module
             .export_section()
