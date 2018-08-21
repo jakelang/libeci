@@ -86,6 +86,144 @@ impl Default for ImportInterfaceMap {
                             Some(ValueType::I32),
                         ),
                     ),
+                    (
+                        "callStatic".to_string(),
+                        FunctionType::new(
+                            vec![
+                                ValueType::I64,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                            ],
+                            Some(ValueType::I32),
+                        ),
+                    ),
+                    (
+                        "create".to_string(),
+                        FunctionType::new(
+                            vec![
+                                ValueType::I64,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                            ],
+                            Some(ValueType::I32),
+                        ),
+                    ),
+                    (
+                        "callDataCopy".to_string(),
+                        FunctionType::new(
+                            vec![ValueType::I32, ValueType::I32, ValueType::I32],
+                            None,
+                        ),
+                    ),
+                    (
+                        "getCallDataSize".to_string(),
+                        FunctionType::new(Vec::new(), Some(ValueType::I32)),
+                    ),
+                    (
+                        "getCodeSize".to_string(),
+                        FunctionType::new(Vec::new(), Some(ValueType::I32)),
+                    ),
+                    (
+                        "externalCodeCopy".to_string(),
+                        FunctionType::new(
+                            vec![
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                            ],
+                            None,
+                        ),
+                    ),
+                    (
+                        "getExternalCodeSize".to_string(),
+                        FunctionType::new(vec![ValueType::I32], Some(ValueType::I32)),
+                    ),
+                    (
+                        "getCaller".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
+                    (
+                        "getCallValue".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
+                    (
+                        "getBlockDifficulty".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
+                    (
+                        "getBlockCoinbase".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
+                    (
+                        "getBlockNumber".to_string(),
+                        FunctionType::new(Vec::new(), Some(ValueType::I64)),
+                    ),
+                    (
+                        "getBlockGasLimit".to_string(),
+                        FunctionType::new(Vec::new(), Some(ValueType::I64)),
+                    ),
+                    (
+                        "getBlockTimestamp".to_string(),
+                        FunctionType::new(Vec::new(), Some(ValueType::I64)),
+                    ),
+                    (
+                        "getTxGasPrice".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
+                    (
+                        "getTxOrigin".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
+                    (
+                        "storageStore".to_string(),
+                        FunctionType::new(vec![ValueType::I32, ValueType::I32], None),
+                    ),
+                    (
+                        "storageLoad".to_string(),
+                        FunctionType::new(vec![ValueType::I32, ValueType::I32], None),
+                    ),
+                    (
+                        "log".to_string(),
+                        FunctionType::new(
+                            vec![
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                                ValueType::I32,
+                            ],
+                            None,
+                        ),
+                    ),
+                    (
+                        "getReturnDataSize".to_string(),
+                        FunctionType::new(Vec::new(), Some(ValueType::I32)),
+                    ),
+                    (
+                        "returnDataCopy".to_string(),
+                        FunctionType::new(
+                            vec![ValueType::I32, ValueType::I32, ValueType::I32],
+                            None,
+                        ),
+                    ),
+                    (
+                        "finish".to_string(),
+                        FunctionType::new(vec![ValueType::I32, ValueType::I32], None),
+                    ),
+                    (
+                        "revert".to_string(),
+                        FunctionType::new(vec![ValueType::I32, ValueType::I32], None),
+                    ),
+                    (
+                        "selfDestruct".to_string(),
+                        FunctionType::new(vec![ValueType::I32], None),
+                    ),
                 ].iter()
                     .cloned()
                     .collect();
