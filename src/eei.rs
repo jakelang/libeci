@@ -15,8 +15,13 @@ impl ImportInterfaceMap {
         }
     }
 
-    pub fn get_func(&self, name: &str) -> Option<&FunctionType> {
-        self.import_list.get(&name.to_string()).clone()
+    pub fn get_func(&self, name: &str) -> Option<FunctionType> {
+        let result = self.import_list.get(&name.to_string());
+
+        match result {
+            Some(func) => Some(func.clone()),
+            None => None,
+        }
     }
 }
 

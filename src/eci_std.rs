@@ -1,5 +1,6 @@
 use checklist::CheckStatus;
-use parity_wasm::elements::{FunctionType, Internal, Module};
+use eei::ImportInterfaceMap;
+use parity_wasm::elements::{External, FunctionType, Internal, Module};
 use pwasm::*;
 
 /// Checks that the module's "main" function has been exported with no arguments or return values.
@@ -62,6 +63,45 @@ pub fn imports_only_eei_namespace(module: &Module) -> CheckStatus {
             return CheckStatus::Malformed;
         }
     }
-
     CheckStatus::Good
+}
+
+/// Checks the imported function signatures against the EEI import list. Will fail if the module
+/// doesn't have an import section.
+pub fn eei_check_func_sigs(module: &Module) -> CheckStatus {
+    let eei = ImportInterfaceMap::default();
+
+    module
+        .import_section()
+        .unwrap()
+        .entries()
+        .iter()
+        .map(|x| (x.field(), x.external()))
+        .map(|(name, binding)| {
+            (
+                eei.get_func(name),
+                match binding {
+                    External::Function(idx) => Some(func_type_by_index(module, *idx as usize)),
+                    _ => None,
+                },
+            )
+        })
+        .map(|(correctsig, funcsig)| {
+            if correctsig != None
+                && funcsig != None
+                && funcsig.unwrap().clone() == correctsig.unwrap()
+            {
+                CheckStatus::Good
+            } else {
+                CheckStatus::Malformed
+            }
+        })
+        .find(|x| {
+            if *x == CheckStatus::Malformed {
+                true
+            } else {
+                false
+            }
+        })
+        .unwrap_or(CheckStatus::Good)
 }

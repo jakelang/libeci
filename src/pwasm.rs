@@ -54,7 +54,7 @@ pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Inter
     }
 }
 
-/// Parses a module's import section into a list of tuples containing the export fields.
+/// Parses a module's import section into a list of tuples containing the import fields.
 pub fn get_imports(module: &Module) -> Option<Vec<(&str, &str)>> {
     if !has_import_section(module) {
         return None;
