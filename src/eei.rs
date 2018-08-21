@@ -245,11 +245,24 @@ mod tests {
     }
 
     #[test]
-    fn default_interface_has_usegas() {
+    fn default_interface_has_methods() {
         let iface = ImportInterfaceMap::default();
         assert_eq!(
             iface.get_func("useGas").unwrap().clone(),
             FunctionType::new(vec![ValueType::I64], None)
+        );
+        assert_eq!(
+            iface.get_func("create").unwrap().clone(),
+            FunctionType::new(
+                vec![
+                    ValueType::I64,
+                    ValueType::I32,
+                    ValueType::I32,
+                    ValueType::I32,
+                    ValueType::I32,
+                ],
+                Some(ValueType::I32)
+            )
         );
     }
 }
