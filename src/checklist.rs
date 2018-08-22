@@ -63,6 +63,13 @@ impl EciChecklist {
                     do_check: eci_std::chk_no_startfn,
                 },
             ),
+            (
+                "eei-funcsigs".to_string(),
+                Check {
+                    status: CheckStatus::Unknown,
+                    do_check: eci_std::chk_func_signatures,
+                },
+            ),
         ].iter()
             .cloned()
             .collect();

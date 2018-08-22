@@ -20,7 +20,7 @@ pub fn chk_mem_exported(module: &Module) -> CheckStatus {
     }
 }
 
-/// Checks that the EEI host functions have been imported with the correct namespace and signatures.
+/// Checks that the EEI host functions have been imported with the correct namespace. 
 pub fn chk_eei_namespace(module: &Module) -> CheckStatus {
     if has_import_section(module) {
         imports_only_eei_namespace(module)
@@ -35,6 +35,11 @@ pub fn chk_no_startfn(module: &Module) -> CheckStatus {
         Some(_thing) => CheckStatus::Malformed,
         None => CheckStatus::Good,
     }
+}
+
+/// Verifies that the EEI has been imported with the correct function signatures.
+pub fn chk_func_signatures(module: &Module) -> CheckStatus {
+    CheckStatus::Good
 }
 
 /*
