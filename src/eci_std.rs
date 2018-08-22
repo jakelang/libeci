@@ -39,7 +39,11 @@ pub fn chk_no_startfn(module: &Module) -> CheckStatus {
 
 /// Verifies that the EEI has been imported with the correct function signatures.
 pub fn chk_func_signatures(module: &Module) -> CheckStatus {
-    CheckStatus::Good
+    if has_import_section(module) {
+        eei_check_func_sigs(module)
+    } else {
+        CheckStatus::Good
+    }
 }
 
 /*
