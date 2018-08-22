@@ -50,10 +50,10 @@ impl EciChecklist {
                 },
             ),
             (
-                "eei-imports".to_string(),
+                "eei-namespace".to_string(),
                 Check {
                     status: CheckStatus::Unknown,
-                    do_check: eci_std::chk_eei_imported,
+                    do_check: eci_std::chk_eei_namespace,
                 },
             ),
             (
@@ -120,7 +120,7 @@ mod tests {
         let checks = EciChecklist::default();
         assert!(checks.checklist.contains_key(&"export-main".to_string()));
         assert!(checks.checklist.contains_key(&"export-memory".to_string()));
-        assert!(checks.checklist.contains_key(&"eei-imports".to_string()));
+        assert!(checks.checklist.contains_key(&"eei-namespace".to_string()));
     }
 
     #[test]

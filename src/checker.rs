@@ -262,12 +262,12 @@ mod tests {
         ];
         let mut checker = EcicChecker::default(&wasm);
         assert_eq!(
-            checker.checks.get_check_status("eei-imports"),
+            checker.checks.get_check_status("eei-namespace"),
             CheckStatus::Unknown
         );
         checker.fire();
         assert_eq!(
-            checker.checks.get_check_status("eei-imports"),
+            checker.checks.get_check_status("eei-namespace"),
             CheckStatus::Good
         );
     }
@@ -283,12 +283,12 @@ mod tests {
         ];
         let mut checker = EcicChecker::default(&wasm);
         assert_eq!(
-            checker.checks.get_check_status("eei-imports"),
+            checker.checks.get_check_status("eei-namespace"),
             CheckStatus::Unknown
         );
         checker.fire();
         assert_eq!(
-            checker.checks.get_check_status("eei-imports"),
+            checker.checks.get_check_status("eei-namespace"),
             CheckStatus::Malformed
         );
     }

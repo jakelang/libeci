@@ -21,7 +21,7 @@ pub fn chk_mem_exported(module: &Module) -> CheckStatus {
 }
 
 /// Checks that the EEI host functions have been imported with the correct namespace and signatures.
-pub fn chk_eei_imported(module: &Module) -> CheckStatus {
+pub fn chk_eei_namespace(module: &Module) -> CheckStatus {
     if has_import_section(module) {
         imports_only_eei_namespace(module)
     } else {
