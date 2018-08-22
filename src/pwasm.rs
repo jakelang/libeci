@@ -29,6 +29,25 @@ pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
     }
 }
 
+/// Resolves an imported function's signature from its callable index.
+pub fn imported_func_type_by_index(module: &Module, index: usize) -> FunctionType {
+    let import_section = module
+        .import_section()
+        .expect("No function section found");
+    let type_section = module
+        .type_section()
+        .expect("No type section found");
+
+    let func_type_ref: usize = match import_section.entries()[index].external() {
+        &External::Function(idx) => idx as usize,
+        _ => usize::max_value(),
+    };
+
+    match type_section.types()[func_type_ref] {
+        Type::Function(ref func_type) => func_type.clone(),
+    }
+}
+
 /// Resolves an export name to a tuple containing its callable index and internal reference.
 pub fn resolve_export_by_name(module: &Module, name: &str) -> Option<(u32, Internal)> {
     if !has_export_section(module) {

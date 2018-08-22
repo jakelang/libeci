@@ -89,8 +89,8 @@ pub fn eei_check_func_sigs(module: &Module) -> CheckStatus {
         .map(|(name, binding)| {
             (
                 eei.get_func(name),
-                match binding {
-                    External::Function(idx) => Some(func_type_by_index(module, *idx as usize)),
+                match *binding {
+                    External::Function(idx) => Some(imported_func_type_by_index(module, idx as usize)),
                     _ => None,
                 },
             )
