@@ -1,4 +1,4 @@
-use checklist::EciChecklist;
+use checklist::{EciChecklist, CheckStatus};
 use parity_wasm::elements::{deserialize_buffer, Module};
 
 #[derive(Clone)]
@@ -44,6 +44,19 @@ impl EcicChecker {
         for check in check_ids {
             let checkresult = self.checks.get_checker(check.as_str())(&module);
             self.checks.set_check_status(check.as_str(), checkresult);
+        }
+    }
+    
+    /// Writes a brief report of each check to stdout.
+    pub fn print_report(&self) {
+        for (id, val) in self.checks.dump_checks().iter() {
+            println!("ID: {} - STATUS: {}", id, match val { // TODO: Refactor this into a method on CheckStatus
+                    CheckStatus::Unknown => "Unknown",
+                    CheckStatus::Nonexistent => "Nonexistent",
+                    CheckStatus::Malformed => "Malformed",
+                    CheckStatus::Good => "Good",
+                }
+            )
         }
     }
 }

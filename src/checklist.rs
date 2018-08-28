@@ -110,6 +110,14 @@ impl EciChecklist {
     pub fn get_checker(&self, key: &str) -> fn(&Module) -> CheckStatus {
         self.checklist[&key.to_string()].do_check
     }
+    
+    /// Returns a vector containing each check and its respective status.
+    pub fn dump_checks(&self) -> Vec<(String, CheckStatus)> {
+        self.checklist
+            .keys()
+            .map(|x| (x.clone(), (self.checklist[x].status)))
+            .collect()
+    }
 }
 
 #[cfg(test)]
