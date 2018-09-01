@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["EcicChecker","Structure initialized with inputted WASM code and a checklist struct."]]});
