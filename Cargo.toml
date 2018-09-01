@@ -1,8 +1,0 @@
-[package]
-name = "eci"
-version = "0.1.0"
-authors = ["Jake Lang <jake@ethereum.org>"]
-
-[dependencies]
-parity-wasm = "0.31"
-log = "0.4.3"
