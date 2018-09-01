@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CheckStatus","Enum describing the state of a check. Always initialized as \"Unknown.\""]],"struct":[["Check","Struct containing data about the status of a check, and a function pointer implements the check."],["EciChecklist","Checklist structure containing a string-to-check map."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ImportInterfaceMap","Struct mapping an imported function name to its expected signature."]]});
