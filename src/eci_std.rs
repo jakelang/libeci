@@ -44,7 +44,7 @@ pub fn chk_mem_exported(module: &Module) -> CheckStatus {
     }
 }
 
-/// Checks that the EEI host functions have been imported with the correct namespace. 
+/// Checks that the EEI host functions have been imported with the correct namespace.
 pub fn chk_eei_namespace(module: &Module) -> CheckStatus {
     if has_import_section(module) {
         imports_only_eei_namespace(module)
@@ -88,6 +88,7 @@ pub fn has_func_export(module: &Module, name: &str, sig: FunctionType) -> CheckS
     }
 }
 
+/// Checks that the module only imports functions from the "ethereum" namespace.
 pub fn imports_only_eei_namespace(module: &Module) -> CheckStatus {
     let importlist = get_imports(module).unwrap();
 
@@ -114,7 +115,9 @@ pub fn eei_check_func_sigs(module: &Module) -> CheckStatus {
             (
                 eei.get_func(name),
                 match *binding {
-                    External::Function(idx) => Some(imported_func_type_by_index(module, idx as usize)),
+                    External::Function(idx) => {
+                        Some(imported_func_type_by_index(module, idx as usize))
+                    }
                     _ => None,
                 },
             )

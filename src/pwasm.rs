@@ -24,7 +24,7 @@
 
 use parity_wasm::elements::{External, FunctionType, Internal, Module, Type};
 
-/// Resolves a function's signature from its callable index. Borrowed from pwasm examples
+/// Resolves a function's signature from its callable index. Borrowed from parity-wasm examples.
 pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
     let function_section = module
         .function_section()
@@ -55,12 +55,8 @@ pub fn func_type_by_index(module: &Module, index: usize) -> FunctionType {
 
 /// Resolves an imported function's signature from its callable index.
 pub fn imported_func_type_by_index(module: &Module, index: usize) -> FunctionType {
-    let import_section = module
-        .import_section()
-        .expect("No function section found");
-    let type_section = module
-        .type_section()
-        .expect("No type section found");
+    let import_section = module.import_section().expect("No function section found");
+    let type_section = module.type_section().expect("No type section found");
 
     let func_type_ref: usize = match import_section.entries()[index].external() {
         &External::Function(idx) => idx as usize,

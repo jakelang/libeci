@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-use checklist::{EciChecklist, CheckStatus};
+use checklist::{CheckStatus, EciChecklist};
 use parity_wasm::elements::{deserialize_buffer, Module};
 
 #[derive(Clone)]
@@ -70,11 +70,15 @@ impl EcicChecker {
             self.checks.set_check_status(check.as_str(), checkresult);
         }
     }
-    
+
     /// Writes a brief report of each check to stdout.
     pub fn print_report(&self) {
         for (id, val) in self.checks.dump_checks().iter() {
-            println!("ID: {} - STATUS: {}", id, match val { // TODO: Refactor this into a method on CheckStatus
+            println!(
+                "ID: {} - STATUS: {}",
+                id,
+                match val {
+                    // TODO: Refactor this into a method on CheckStatus
                     CheckStatus::Unknown => "Unknown",
                     CheckStatus::Nonexistent => "Nonexistent",
                     CheckStatus::Malformed => "Malformed",

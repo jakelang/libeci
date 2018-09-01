@@ -50,6 +50,7 @@ impl ImportInterfaceMap {
 }
 
 impl Default for ImportInterfaceMap {
+    /// Constructs an ImportInterfaceMap containing the function signatures of the ewasm EEI.
     fn default() -> Self {
         ImportInterfaceMap {
             import_list: {
